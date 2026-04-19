@@ -1,37 +1,45 @@
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+.venv/
+venv/
+env/
+build/
+dist/
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
+# uv
+.uv/
+uv.lock
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
 
 # Environment
 .env
-.venv
-env/
-venv/
+.env.local
+.env.*.local
 
-# Data files
-*.csv
-*.json
-*.pkl
-*.h5
+# Agent Kit local state
+.agent_kit/
+eval_runs/
+*.sqlite
+*.sqlite3
+*.db
 
-# Images (keep sample images if needed)
-# *.jpg
-# *.png
-
-# Model files
-*.pt
-*.pth
-*.ckpt
-models/
-
-# IDE
-.idea/
+# Editor
 .vscode/
-
-# OS
+.idea/
+*.swp
+*.swo
 .DS_Store
 Thumbs.db

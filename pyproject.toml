@@ -1,0 +1,152 @@
+[project]
+name = "agent-kit"
+version = "0.1.0"
+description = "Production-grade Python template for shipping AI agents in a weekend."
+readme = "docs/README.md"
+requires-python = ">=3.12"
+license = { file = "docs/LICENSE.md" }
+authors = [{ name = "Agent Kit" }]
+keywords = ["ai", "agents", "llm", "anthropic", "openai", "ollama", "starter-kit"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "anthropic>=0.40.0",
+    "openai>=1.54.0",
+    "ollama>=0.4.0",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.6.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "sse-starlette>=2.1.0",
+    "httpx>=0.27.0",
+    "tenacity>=9.0.0",
+    "structlog>=24.4.0",
+    "rich>=13.9.0",
+    "tiktoken>=0.8.0",
+    "chromadb>=0.5.0",
+    "psycopg[binary,pool]>=3.2.0",
+    "pgvector>=0.3.0",
+    "numpy>=2.0.0",
+    "typer>=0.12.0",
+    "jinja2>=3.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.7.0",
+    "mypy>=1.13.0",
+    "types-jinja2",
+    "httpx>=0.27.0",
+]
+
+[project.scripts]
+agent-kit-evals = "agent_kit.evals.harness:cli"
+agent-kit-server = "examples.server:main"
+
+[build-system]
+requires = ["hatchling>=1.24.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agent_kit"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["agent_kit", "tests", "examples"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+    "PL",  # pylint
+    "D",   # pydocstyle
+]
+ignore = [
+    "D203",    # one-blank-line-before-class (conflicts with D211)
+    "D213",    # multi-line-summary-second-line (conflicts with D212)
+    "D301",    # r""" required — we use `\n` in examples deliberately
+    "PLR0913", # too many arguments
+    "PLR2004", # magic value
+    "PLR0912", # too many branches
+    "PLR0915", # too many statements
+    "PLC0415", # local import — needed for optional heavy deps
+    "PLW0603", # global statement — the process-wide singletons need it
+    "PLW2901", # for-loop variable reassignment
+    "UP046",   # use PEP 695 type parameters — we support pydantic-compatible Generics
+    "N818",    # exception name suffix — BudgetExceeded reads better than BudgetExceededError
+    "B008",    # typer uses function-call defaults by design
+    "RUF001",  # ambiguous unicode (en dash / em dash) — allowed in prose
+    "RUF005",  # list concat vs unpack — either is fine
+    "RUF046",  # int() wrapping of floor/ceil — readability over micro-opt
+    "E501",    # line too long (formatter handles this)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "PLR2004"]
+"examples/**" = ["D"]
+"agent_kit/tools/builtin/__init__.py" = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_return_any = true
+show_error_codes = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = [
+    "chromadb.*",
+    "pgvector.*",
+    "ollama.*",
+    "tiktoken.*",
+    "sse_starlette.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*", "examples.*"]
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+]
+markers = [
+    "integration: integration tests requiring network / API keys",
+    "slow: slow tests",
+]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true

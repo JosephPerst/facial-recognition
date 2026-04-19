@@ -1,0 +1,6 @@
+{"id": "py-reverse", "input": "Write a Python one-liner that reverses the string 'agentkit'.", "expected": "tikntega", "tags": ["python", "oneliner"]}
+{"id": "py-fizzbuzz", "input": "Write a 5-line FizzBuzz in Python for numbers 1..15.", "expected": "FizzBuzz", "tags": ["python"]}
+{"id": "bash-count", "input": "Bash command to count the number of lines in a file called 'foo.txt'.", "expected": "wc -l foo.txt", "tags": ["bash"]}
+{"id": "regex-email", "input": "Write a Python regex pattern string that matches a basic email address.", "expected": "@", "tags": ["python", "regex"]}
+{"id": "sql-top10", "input": "SQL query to return the top 10 rows from a table 'users' ordered by 'signup_date' descending.", "expected": "ORDER BY", "tags": ["sql"]}
+{"id": "git-undo", "input": "Git command to undo the last commit while keeping the changes staged.", "expected": "git reset --soft HEAD", "tags": ["git"]}

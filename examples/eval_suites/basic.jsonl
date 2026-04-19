@@ -1,0 +1,8 @@
+{"id": "math-1", "input": "What is 2 + 2?", "expected": "4", "tags": ["math", "smoke"]}
+{"id": "math-2", "input": "What is 11 * 12?", "expected": "132", "tags": ["math"]}
+{"id": "geo-1", "input": "What is the capital of France?", "expected": "Paris", "tags": ["geography", "smoke"]}
+{"id": "geo-2", "input": "Name the largest ocean on Earth.", "expected": "Pacific", "tags": ["geography"]}
+{"id": "lang-1", "input": "Translate 'good morning' to Spanish.", "expected": "buenos dias", "tags": ["language"]}
+{"id": "science-1", "input": "What gas do plants primarily absorb for photosynthesis?", "expected": "carbon dioxide", "tags": ["science"]}
+{"id": "history-1", "input": "In what year did World War II end?", "expected": "1945", "tags": ["history"]}
+{"id": "format-1", "input": "Respond with exactly the word OK and nothing else.", "expected": "OK", "tags": ["formatting"]}

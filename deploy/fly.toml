@@ -1,0 +1,47 @@
+# fly.toml — Fly.io deployment for Agent Kit
+# Deploy with:  fly launch --copy-config --dockerfile deploy/Dockerfile
+#               fly secrets set ANTHROPIC_API_KEY=...
+#               fly deploy
+
+app = "agent-kit"
+primary_region = "iad"
+
+[build]
+  dockerfile = "deploy/Dockerfile"
+
+[env]
+  AGENT_KIT_PORT = "8000"
+  AGENT_KIT_HOST = "0.0.0.0"
+  AGENT_KIT_LOG_JSON = "true"
+
+[[services]]
+  internal_port = 8000
+  protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [services.concurrency]
+    type = "requests"
+    soft_limit = 25
+    hard_limit = 40
+
+  [[services.http_checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "get"
+    path = "/healthz"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
