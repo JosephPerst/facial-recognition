@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Kit — ship production AI agents in a weekend</title>
+<meta name="description" content="An opinionated Python starter kit for building AI agents. Provider-swap, streaming, tools, memory, evals, deploy — batteries included.">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:title" content="Agent Kit — ship production AI agents in a weekend">
+<meta property="og:description" content="An opinionated Python starter kit for building AI agents. Skip 2–3 weeks of plumbing.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{BUY_URL}}">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root {
+    --bg: #0b0d12;
+    --card: #12151c;
+    --border: #1f2430;
+    --text: #e6e9ef;
+    --muted: #9aa3b2;
+    --accent: #ff7a33;
+    --accent-hover: #ff8d4d;
+    --green: #42d392;
+    --code-bg: #0f1218;
+    --code-border: #1a1f2a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 1.25rem; }
+
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 0; font-size: 0.95rem;
+  }
+  nav .brand { font-weight: 700; letter-spacing: -0.01em; }
+  nav .brand .dot { color: var(--accent); }
+  nav ul { display: flex; gap: 1.5rem; list-style: none; padding: 0; margin: 0; }
+  nav ul a { color: var(--muted); }
+  nav ul a:hover { color: var(--text); }
+
+  header.hero {
+    padding: 4rem 0 3rem;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-block; font-size: 0.78rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent);
+    padding: 0.35rem 0.75rem; border: 1px solid rgba(255,122,51,0.35);
+    border-radius: 999px; margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.08;
+    letter-spacing: -0.02em; margin: 0 0 1.25rem; font-weight: 800;
+  }
+  h1 .accent { color: var(--accent); }
+  header.hero p.sub {
+    font-size: 1.15rem; color: var(--muted); max-width: 640px; margin: 0 auto 2rem;
+  }
+  .cta-row {
+    display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 1.4rem; border-radius: 10px; font-weight: 600;
+    font-size: 0.98rem; border: 1px solid transparent; cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-primary { background: var(--accent); color: #0b0d12; }
+  .btn-primary:hover { background: var(--accent-hover); color: #0b0d12; }
+  .btn-ghost { border-color: var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--muted); }
+  .pill {
+    display: inline-flex; gap: 0.4rem; align-items: center;
+    font-size: 0.85rem; color: var(--muted); margin-top: 1.25rem;
+  }
+  .pill .dot-g { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+
+  /* Code block */
+  .code-card {
+    margin: 3rem auto 0; max-width: 860px;
+    background: var(--code-bg); border: 1px solid var(--code-border);
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    text-align: left;
+  }
+  .code-card .tab {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1rem; border-bottom: 1px solid var(--code-border);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.82rem; color: var(--muted);
+  }
+  .code-card .tab .dots { display: inline-flex; gap: 0.35rem; margin-right: 0.4rem; }
+  .code-card .tab .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #2a2f3b;
+  }
+  pre {
+    margin: 0; padding: 1.25rem 1.5rem; overflow-x: auto;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.9rem; line-height: 1.6;
+  }
+  pre code { color: #e6e9ef; }
+  .k { color: #c792ea; }  /* keyword */
+  .s { color: #a5e075; }  /* string */
+  .c { color: #6b7280; font-style: italic; } /* comment */
+  .f { color: #82aaff; }  /* function */
+  .n { color: #ffcb6b; }  /* number/name */
+
+  /* Sections */
+  section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  section h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.02em;
+    margin: 0 0 1rem; font-weight: 800;
+  }
+  section .lead {
+    color: var(--muted); max-width: 640px; margin: 0 0 2.5rem; font-size: 1.05rem;
+  }
+
+  /* Feature grid */
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem;
+  }
+  .card .ic {
+    font-size: 1.2rem; color: var(--accent);
+    width: 34px; height: 34px; display: inline-flex;
+    align-items: center; justify-content: center;
+    background: rgba(255,122,51,0.12); border-radius: 8px; margin-bottom: 0.75rem;
+  }
+  .card h3 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+  .card p { margin: 0; color: var(--muted); font-size: 0.94rem; line-height: 1.5; }
+
+  /* What you get */
+  .bom {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 0.75rem;
+  }
+  .bom li {
+    list-style: none; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.85rem 1rem;
+    display: flex; align-items: flex-start; gap: 0.6rem;
+    font-size: 0.94rem;
+  }
+  .bom ul { padding: 0; margin: 0; display: contents; }
+  .bom .chk { color: var(--green); flex: 0 0 auto; font-weight: 700; }
+
+  /* For / not-for */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  .two-col .card h3 { display: flex; align-items: center; gap: 0.5rem; }
+  .two-col li { margin: 0.4rem 0; color: var(--muted); }
+
+  /* Pricing */
+  .pricing {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem; max-width: 760px; margin: 0 auto;
+  }
+  .price {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.75rem; text-align: left;
+  }
+  .price.featured { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(255,122,51,0.08); }
+  .price h3 { margin: 0 0 0.25rem; font-size: 1.1rem; }
+  .price .amt { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; margin: 0.5rem 0 0.1rem; }
+  .price .amt small { font-size: 0.9rem; color: var(--muted); font-weight: 400; }
+  .price ul { list-style: none; padding: 0; margin: 1rem 0 1.5rem; }
+  .price li { margin: 0.4rem 0; color: var(--muted); font-size: 0.92rem; }
+  .price li::before { content: "✓"; color: var(--green); margin-right: 0.5rem; font-weight: 700; }
+
+  /* FAQ */
+  .faq details {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.5rem;
+  }
+  .faq summary {
+    cursor: pointer; font-weight: 600; list-style: none;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; float: right; color: var(--muted); }
+  .faq details[open] summary::after { content: "–"; }
+  .faq p { color: var(--muted); margin: 0.6rem 0 0; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 2rem 0 3rem;
+    color: var(--muted); font-size: 0.9rem; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <nav>
+    <div class="brand">agent<span class="dot">.</span>kit</div>
+    <ul>
+      <li><a href="#features">features</a></li>
+      <li><a href="#included">what's included</a></li>
+      <li><a href="#pricing">pricing</a></li>
+      <li><a href="#faq">faq</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Python · Pydantic v2 · FastAPI</span>
+    <h1>Ship production AI agents<br><span class="accent">in a weekend, not a month.</span></h1>
+    <p class="sub">
+      Agent Kit is the opinionated Python starter you wish you'd bought.
+      Provider-swap, streaming, tool calling, memory, evals, observability, deploy —
+      batteries included. Skip 2–3 weeks of plumbing and start shipping.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{{BUY_URL}}">Get Agent Kit — $99 →</a>
+      <a class="btn btn-ghost" href="#features">See what's inside</a>
+    </div>
+    <div class="pill"><span class="dot-g"></span> 37 tests green · mypy --strict · ruff clean</div>
+
+    <div class="code-card" aria-label="Code sample">
+      <div class="tab">
+        <span class="dots"><span></span><span></span><span></span></span>
+        examples/my_agent.py
+      </div>
+<pre><code><span class="k">from</span> agent_kit <span class="k">import</span> Agent, Settings
+<span class="k">from</span> agent_kit.tools.base <span class="k">import</span> tool
+<span class="k">from</span> agent_kit.tools.registry <span class="k">import</span> ToolRegistry
+
+
+<span class="f">@tool()</span>
+<span class="k">async def</span> <span class="f">add</span>(a: <span class="n">int</span>, b: <span class="n">int</span>) -> <span class="n">int</span>:
+    <span class="s">"""Add two integers."""</span>
+    <span class="k">return</span> a + b
+
+
+agent = Agent(
+    settings=Settings(),
+    system=<span class="s">"You are a pedantic calculator."</span>,
+    tools=ToolRegistry([add]),
+)
+
+<span class="c"># Streaming, parallel tool calls, retries, cost caps — handled.</span>
+<span class="k">async for</span> token <span class="k">in</span> agent.stream(<span class="s">"What is 17 + 25?"</span>):
+    print(token, end=<span class="s">""</span>, flush=<span class="k">True</span>)
+
+print(<span class="s">f"\ncost: ${agent.ledger.total.cost_usd:.4f}"</span>)
+</code></pre>
+    </div>
+  </header>
+
+  <section id="features">
+    <h2>Everything you shouldn't have to build.</h2>
+    <p class="lead">
+      You want to build a product. You don't want to build streaming parsers,
+      retry loops, cost trackers, and eval harnesses. This kit does the plumbing
+      so you can focus on the prompt, the tools, and the UX.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <div class="ic">⇄</div>
+        <h3>Provider-swap</h3>
+        <p>Anthropic, OpenAI, Ollama behind one interface. Switch with one env var — no code changes.</p>
+      </div>
+      <div class="card">
+        <div class="ic">⌁</div>
+        <h3>Streaming &amp; parallel tools</h3>
+        <p>Token-by-token streaming. When the model emits N tool calls, they run via <code>asyncio.gather</code>.</p>
+      </div>
+      <div class="card">
+        <div class="ic">◎</div>
+        <h3>Typed end-to-end</h3>
+        <p>Pydantic models for every message, tool arg, eval case. <code>mypy --strict</code> passes with zero ignores.</p>
+      </div>
+      <div class="card">
+        <div class="ic">★</div>
+        <h3>Evals built in</h3>
+        <p>JSONL datasets, LLM-as-judge (correctness + helpfulness + safety), regression diffs, HTML reports.</p>
+      </div>
+      <div class="card">
+        <div class="ic">⎈</div>
+        <h3>Memory that scales</h3>
+        <p>In-memory → SQLite → Chroma → pgvector. Auto-summariser rolls up old turns so your context never blows up.</p>
+      </div>
+      <div class="card">
+        <div class="ic">$</div>
+        <h3>Cost &amp; budget caps</h3>
+        <p>Per-call and cumulative USD tracking. Hard <code>max_cost_usd</code> + <code>max_iterations</code>. No surprise bills.</p>
+      </div>
+      <div class="card">
+        <div class="ic">⚙</div>
+        <h3>HTTP + SSE server</h3>
+        <p>FastAPI wrapper with Server-Sent Events streaming, session memory, optional API-key auth — ready.</p>
+      </div>
+      <div class="card">
+        <div class="ic">☁</div>
+        <h3>Deploy anywhere</h3>
+        <p>Dockerfile, Modal app, Fly.io toml, Railway json — all committed. Pick one, ship in minutes.</p>
+      </div>
+      <div class="card">
+        <div class="ic">◉</div>
+        <h3>Observability</h3>
+        <p>Structured logs, OpenTelemetry-shaped spans, per-span attributes. JSONL sink ready for Loki / DataDog.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="included">
+    <h2>What you get, file by file.</h2>
+    <p class="lead">
+      Full source. 40-ish modules, ~6,400 lines. Read it in an afternoon, modify
+      anything, ship your product on top.
+    </p>
+    <div class="bom">
+      <ul>
+        <li><span class="chk">✓</span> <code>agent_kit/core/</code> — Agent loop, Provider ABC, Messages, Settings</li>
+        <li><span class="chk">✓</span> <code>agent_kit/tools/</code> — Tool ABC + <code>@tool</code> decorator + 5 built-ins</li>
+        <li><span class="chk">✓</span> <code>agent_kit/memory/</code> — SQLite, Chroma, pgvector, auto-summariser</li>
+        <li><span class="chk">✓</span> <code>agent_kit/evals/</code> — judges, harness, metrics, MD+HTML reports</li>
+        <li><span class="chk">✓</span> <code>agent_kit/observability/</code> — structlog tracer + cost ledger</li>
+        <li><span class="chk">✓</span> <code>examples/research_agent/</code> — web search + cited summaries</li>
+        <li><span class="chk">✓</span> <code>examples/coding_agent/</code> — reads files, writes code, runs tests</li>
+        <li><span class="chk">✓</span> <code>examples/server.py</code> — FastAPI + SSE streaming</li>
+        <li><span class="chk">✓</span> <code>examples/eval_suites/</code> — basic, coding, safety JSONL</li>
+        <li><span class="chk">✓</span> <code>tests/</code> — 37 pytest tests, no API key needed</li>
+        <li><span class="chk">✓</span> <code>deploy/</code> — Docker, Modal, Fly, Railway</li>
+        <li><span class="chk">✓</span> <code>docs/</code> — README, ARCHITECTURE, TOOLS, EVALS, DEPLOY</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Who this is for.</h2>
+    <div class="two-col">
+      <div class="card">
+        <h3>✅ You'll love it if</h3>
+        <ul>
+          <li>You're shipping an AI product solo or on a small team.</li>
+          <li>You'd rather write product code than plumbing.</li>
+          <li>You want typed, tested, mypy-clean Python.</li>
+          <li>You care enough about quality to run evals on every PR.</li>
+          <li>You're billing a client $10k for an agent and want to skip week one.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🚫 Skip this if</h3>
+        <ul>
+          <li>You want a visual no-code flow builder.</li>
+          <li>You need multi-agent orchestration graphs — use LangGraph.</li>
+          <li>You're a researcher running agent experiments, not shipping a product.</li>
+          <li>You don't write Python.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2 style="text-align:center">One-time payment. Yours forever.</h2>
+    <p class="lead" style="text-align:center; margin-left:auto; margin-right:auto">
+      Lifetime access to the code. 12 months of free updates. Commercial use included.
+    </p>
+    <div class="pricing">
+      <div class="price featured">
+        <h3>Solo</h3>
+        <div class="amt">$99 <small>one-time</small></div>
+        <ul>
+          <li>Full source code</li>
+          <li>Unlimited personal &amp; commercial projects</li>
+          <li>12 months of updates</li>
+          <li>Private Discord access</li>
+          <li>14-day refund, no questions</li>
+        </ul>
+        <a class="btn btn-primary" href="{{BUY_URL}}" style="width:100%; justify-content:center">Get Agent Kit →</a>
+      </div>
+      <div class="price">
+        <h3>Team</h3>
+        <div class="amt">$399 <small>up to 5 devs</small></div>
+        <ul>
+          <li>Everything in Solo</li>
+          <li>5 developer seats</li>
+          <li>Priority Discord support</li>
+          <li>Invoice on request</li>
+        </ul>
+        <a class="btn btn-ghost" href="{{TEAM_BUY_URL}}" style="width:100%; justify-content:center">Buy for team →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <h2>FAQ</h2>
+    <details>
+      <summary>Can I use this in commercial projects?</summary>
+      <p>Yes. The license lets you ship unlimited products, personal or commercial. You just can't resell the kit itself as a competing template.</p>
+    </details>
+    <details>
+      <summary>What's in the "12 months of updates"?</summary>
+      <p>Bug fixes, new providers as they launch, judge improvements, deploy-target additions. After 12 months you keep what you have forever, but new releases require a renewal (discounted).</p>
+    </details>
+    <details>
+      <summary>Which LLM provider should I use?</summary>
+      <p>The default is Anthropic's Claude Sonnet 4.6 — best reasoning-per-dollar as of this week. OpenAI and Ollama work identically. Swap with one env var.</p>
+    </details>
+    <details>
+      <summary>Does it really do evals, or is that just a checkbox?</summary>
+      <p>Evals are the whole reason this exists. You get JSONL dataset loader, LLM-as-judge with correctness / helpfulness / safety, regression compare against a baseline run, and a standalone HTML report you can drop into a PR. See <code>docs/EVALS.md</code>.</p>
+    </details>
+    <details>
+      <summary>Python version?</summary>
+      <p>3.12+. Managed with <code>uv</code>. Sync and run in under 60 seconds.</p>
+    </details>
+    <details>
+      <summary>Refund policy?</summary>
+      <p>14 days, no questions asked. If it doesn't save you time, I don't want your money.</p>
+    </details>
+    <details>
+      <summary>Who makes this?</summary>
+      <p>{{MAINTAINER_NAME}} — an engineer shipping AI products. Contact: <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a>.</p>
+    </details>
+  </section>
+
+  <footer>
+    © 2026 Agent Kit · <a href="{{BUY_URL}}">Buy</a> · <a href="mailto:{{CONTACT_EMAIL}}">Contact</a> · <a href="{{TWITTER_URL}}">Twitter</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
